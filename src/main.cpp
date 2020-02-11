@@ -14,7 +14,7 @@ struct Compare {
 
 int main() {
     int matrixOrder;
-    std::cout << "Please enter the order of distanceMatrix" << std::endl;
+    std::cout << "Please enter the order of distanceMatrix. Enter 5 to generate the problem matrix in the readme." << std::endl;
     std::cin >> matrixOrder;
     Matrix problemMatrix(matrixOrder);
     std::cout << "User Input: ";
@@ -31,7 +31,7 @@ int main() {
     while (!TSP.empty()) {
         Node node = TSP.top();
         if (node.getIsRoute()) {
-            if (node.getRouteCost() < bestNode.getRouteCost()) {
+            if (node.getRouteCost() <= bestNode.getRouteCost()) {
                 bestNode = node;
             }
         }
@@ -41,17 +41,18 @@ int main() {
             Threads thread = Threads(node);
             Node leftNode1(problemMatrix, thread.getLeftChild());
             Node rightNode1(problemMatrix, thread.getRightChild());
-            TSP.push(leftNode1);
-            TSP.push(rightNode1);
+            if (leftNode1.getNodeLowerBound() <= bestNode.getRouteCost()){
+                TSP.push(leftNode1);
+            }
+            if (rightNode1.getNodeLowerBound() <= bestNode.getRouteCost()){
+                TSP.push(rightNode1);
+            }
             i++;
         }
     }
     bestNode.printRoute();
     std::cout << "Number of pops = " << i << std::endl;
     std::cout << std::endl;
-
-
-
     // Begin of parallel region
     int nthreads, tid;
 

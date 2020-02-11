@@ -21,6 +21,9 @@ void Matrix::populateMatrix() {
                 this->distanceMatrix[i][j] = 0;
             } else {
                 int randomInt = rand() % 10;
+                if (randomInt == 0){
+                    randomInt = 9;
+                }
                 this->distanceMatrix[i][j] = this->distanceMatrix[j][i] = (randomInt);
             }
         }
@@ -46,6 +49,7 @@ void Matrix::defaultMatrix() {
                                {4, 4, 0, 5, 8},
                                {2, 6, 5, 0, 6},
                                {7, 3, 8, 6, 0}};
+    std::cout << "Using the sample matrix explained in readme:" << std::endl;
     for (int i = 0; i < order; i++) {
         for (int j = 0; j < order; j++) {
             this->distanceMatrix[i][j] = defaultMatrix[i][j];

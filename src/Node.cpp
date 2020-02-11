@@ -2,6 +2,15 @@
 #include <iostream>
 #include "Node.h"
 #include "Matrix.h"
+int getNextNode(int prev, int current, std::vector<std::vector<int>> edgeMatrix){
+    int matrixOrder = edgeMatrix.size();
+    for (int i = 0; i<matrixOrder; i++){
+        if (edgeMatrix[current][i]==1 && i!=prev){
+            return i;
+        }
+    }
+}
+
 
 double Node::findLowerBound(Matrix problemMatrix) {
     int **inputMatrix = problemMatrix.getMatrix();
@@ -77,27 +86,74 @@ bool Node::getIsLeafNode() {
     return isLeafNode;
 }
 
+//bool Node::checkIsRoute() {
+//    int matrixOrder = nodeEdgeMatrix.size();
+//    std::vector<int> nodeEdgeMatrix(matrixOrder, 0);
+//    std::vector<bool> vertVisitList(nodeEdgeMatrix.size(), false);
+//    for (int i=0; i<matrixOrder; i++){
+//        for(int j=0; j<matrixOrder; j++){
+//            if (nodeEdgeMatrix[i][j]==1){
+//                nodeEdgeMatrix[i] = nodeEdgeMatrix[i]+1;
+//            }
+//        }
+//    }
+//
+//    int start = 0;
+//    int next = 0;
+//    int prev = 0; // Keep track of previous node
+//    for (int i = 0; i < nodeEdgeMatrix.size(); i++) {
+//        if (nodeEdgeMatrix[i] != 2) {
+//            return false;
+//        }
+//    }
+//    // Check for circle
+//    for (int i = 0; i < vertVisitList.size(); i++) {
+//        next = nodeEdgeMatrix[start][0];
+//        if (next == prev)
+//            next = nodeEdgeMatrix[start][1];
+//        // There is a circle!
+//        if (vertVisitList[next] == true) {
+//            return false;
+//        } else {
+//            vertVisitList[next] = true;
+//        }
+//        prev = start;
+//        start = next;
+//    }
+//    return true;
+//}
 bool Node::checkIsRoute() {
     int matrixOrder = nodeEdgeMatrix.size();
+    std::vector<int> usedEdges(matrixOrder, 0);
+    std::vector<bool> vertVisitList(matrixOrder, false);
+    int next = 0;
+    int prev = -1; // Keep track of previous node
+
+
     for (int i = 0; i < matrixOrder; i++) {
-
-        // Tracks the total number of edges that should be incident with i
-        int remainingEdges = 0;
-        int edgesConsidered = 0;
-        int edgesNotConsidered = 0;
-
         for (int j = 0; j < matrixOrder; j++) {
-            if (i != j && nodeEdgeMatrix[i][j] == 0) {
-                remainingEdges++;
-            } else if (i != j && nodeEdgeMatrix[i][j] == -1) {
-                edgesNotConsidered++;
-            } else if (i != j && nodeEdgeMatrix[i][j] == 1) {
-                edgesConsidered++;
+            if (nodeEdgeMatrix[i][j] == 1) {
+                usedEdges[i] = usedEdges[i] + 1;
             }
         }
+    }
 
-        if (remainingEdges != 0 || edgesNotConsidered != matrixOrder - 3 || edgesConsidered != 2) {
+    for (int i = 0; i < matrixOrder; i++) {
+        if (usedEdges[i] != 2) {
             return false;
+        }
+    }
+    bool isNotCircle = true;
+    int i = 0;
+    while (isNotCircle || (i <= matrixOrder)) {
+        i++;
+        next = getNextNode(prev, 0, nodeEdgeMatrix);
+        prev = next;
+        // There is a circle!
+        if (vertVisitList[next] == true) {
+            isNotCircle = false;
+        } else {
+            vertVisitList[next] = true;
         }
     }
     return true;
@@ -137,3 +193,4 @@ void Node::printRoute() {
     }
     std::cout << "Optimal route has cost : " << routeCost << std::endl;
 }
+
