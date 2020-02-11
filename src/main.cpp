@@ -5,6 +5,7 @@
 #include "Node.h"
 #include "BranchAndBound.h"
 #include "Threads.h"
+#include <chrono>
 
 struct Compare {
     bool operator()(Node &node1, Node &node2) {
@@ -13,6 +14,7 @@ struct Compare {
 };
 
 void singleThreadBAndBTSP(int matrixOrder) {
+    std::chrono::time_point<std::chrono::system_clock> start, end;
     Matrix problemMatrix(matrixOrder);
     std::cout << "User Input: ";
     std::cout << problemMatrix.getOrder() << std::endl;
@@ -24,6 +26,7 @@ void singleThreadBAndBTSP(int matrixOrder) {
     TSP.push(bestNode);
 
     int i = 0;
+    start = std::chrono::system_clock::now();
     while (!TSP.empty()) {
         Node node = TSP.top();
         if (node.getIsRoute()) {
@@ -47,8 +50,12 @@ void singleThreadBAndBTSP(int matrixOrder) {
             i++;
         }
     }
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
     bestNode.printRoute();
-    std::cout << "Total nodes popped = " << i << std::endl;
+    std::cout << "Total nodes popped : \t\t" << i << std::endl;
+    std::cout << "Time Taken (in seconds) : \t" << elapsed_seconds.count() << std::endl;
+
     std::cout << std::endl;
 }
 

@@ -12,7 +12,6 @@ int getNextNode(int prev, int current, std::vector<std::vector<int>> edgeMatrix)
     }
 }
 
-
 double Node::findLowerBound(Matrix problemMatrix) {
     int **inputMatrix = problemMatrix.getMatrix();
     int firstLowest = std::numeric_limits<int>::max(); // Max value of int, to give an upper bound
@@ -153,5 +152,5 @@ void Node::printRoute() {
 
         }
     }
-    std::cout << "Optimal route has cost : " << routeCost << std::endl;
+    std::cout << "Optimal route has cost : \t" << routeCost << std::endl;
 }
