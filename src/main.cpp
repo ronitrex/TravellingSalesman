@@ -12,10 +12,7 @@ struct Compare {
     }
 };
 
-int main() {
-    int matrixOrder;
-    std::cout << "Please enter the order of distanceMatrix. Enter 5 to generate the problem matrix in the readme." << std::endl;
-    std::cin >> matrixOrder;
+void singleThreadBAndBTSP(int matrixOrder) {
     Matrix problemMatrix(matrixOrder);
     std::cout << "User Input: ";
     std::cout << problemMatrix.getOrder() << std::endl;
@@ -23,7 +20,6 @@ int main() {
 
     std::vector<std::vector<int>> edgeMatrix(matrixOrder, std::vector<int>(matrixOrder, 0));
     std::priority_queue<Node, std::vector<Node>, Compare> TSP;
-
     Node bestNode(problemMatrix, edgeMatrix);
     TSP.push(bestNode);
 
@@ -37,26 +33,38 @@ int main() {
         }
 
         TSP.pop();
+
         if (!node.getIsLeafNode()) {
             Threads thread = Threads(node);
-            Node leftNode1(problemMatrix, thread.getLeftChild());
-            Node rightNode1(problemMatrix, thread.getRightChild());
-            if (leftNode1.getNodeLowerBound() <= bestNode.getRouteCost()){
-                TSP.push(leftNode1);
+            Node leftNode(problemMatrix, thread.getLeftChild());
+            Node rightNode(problemMatrix, thread.getRightChild());
+            if (leftNode.getNodeLowerBound() <= bestNode.getRouteCost()) {
+                TSP.push(leftNode);
             }
-            if (rightNode1.getNodeLowerBound() <= bestNode.getRouteCost()){
-                TSP.push(rightNode1);
+            if (rightNode.getNodeLowerBound() <= bestNode.getRouteCost()) {
+                TSP.push(rightNode);
             }
             i++;
         }
     }
     bestNode.printRoute();
-    std::cout << "Number of pops = " << i << std::endl;
+    std::cout << "Total nodes popped = " << i << std::endl;
     std::cout << std::endl;
+}
+
+int main() {
+    int matrixOrder;
+    std::cout << "Please enter the order of distanceMatrix. Enter 5 to generate the problem matrix in the readme."
+              << std::endl;
+    std::cin >> matrixOrder;
+
+    singleThreadBAndBTSP(matrixOrder);
+
+    return 0;
+
     // Begin of parallel region
     int nthreads, tid;
 
-    return 0;
     /* Fork a team of threads with each thread having a private tid variable */
 #pragma omp parallel private(nthreads, tid) default(none)
     {

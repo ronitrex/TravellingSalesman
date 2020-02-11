@@ -1,13 +1,13 @@
-#ifndef TRAVELLINGSALESMAN_THREADS_H
-#define TRAVELLINGSALESMAN_THREADS_H
-
 #include "Node.h"
 #include "BranchAndBound.h"
 
+#ifndef TRAVELLINGSALESMAN_THREADS_H
+#define TRAVELLINGSALESMAN_THREADS_H
+
 class Threads {
 private:
-    std::vector<std::vector<int>> leftChild;            // PLUSedgeMatrix()
-    std::vector<std::vector<int>> rightChild;           // MINUSedgeMatrix()
+    std::vector<std::vector<int>> leftChild;         // PLUSedgeMatrix()
+    std::vector<std::vector<int>> rightChild;        // MINUSedgeMatrix()
 public:
     Threads(Node node) {
         BranchAndBound BandB(node.getNodeEdgeMatrix());

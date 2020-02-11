@@ -2,25 +2,11 @@
 #include <iostream>
 #include "BranchAndBound.h"
 
-void BranchAndBound::displayEdgeMatrix(std::vector<std::vector<int>> edgeMatrix) {
-    int matrixOrder = edgeMatrix.size();
-    std::cout << "Printing the edge Matrix representing the Node.\n";
-    for (int i = 0; i < matrixOrder; i++) {
-        for (int j = 0; j < matrixOrder; j++) {
-            if (edgeMatrix[i][j] >=
-                0)                                                          // If value is non-negative, we print it with a space behind it for formatting
-                std::cout << " " << edgeMatrix[i][j] << " ";
-            else std::cout << edgeMatrix[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
 std::vector<std::vector<int>> BranchAndBound::updateEdgeMatrix(std::vector<std::vector<int>> edgeMatrix, int v) {
     int matrixOrder = edgeMatrix.size();
     for (int i = v; i < matrixOrder; i++) {
-        int edgesConsidered = 0;                                                                        // Tracks the total number of edges that should be incident with
-        int remainingEdges = 0;                                                                     // Tracks the remaining edges to be considered
+        int edgesConsidered = 0;
+        int remainingEdges = 0;
         for (int j = 0; j < matrixOrder; j++) {
             if (i != j && edgeMatrix[i][j] == 1) {
                 edgesConsidered++;
@@ -85,11 +71,3 @@ std::vector<std::vector<int>> BranchAndBound::getPLUSedgeMatrix() {
 std::vector<std::vector<int>> BranchAndBound::getMINUSedgeMatrix() {
     return std::vector<std::vector<int>>(MINUSedgeMatrix);
 }
-
-//BranchAndBound BranchAndBound::rightChild() {
-//    return BranchAndBound(MINUSedgeMatrix);
-//}
-//
-//BranchAndBound BranchAndBound::leftChild() {
-//    return BranchAndBound(PLUSedgeMatrix);
-//}
