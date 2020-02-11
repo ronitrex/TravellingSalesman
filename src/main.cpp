@@ -1,11 +1,11 @@
 #include <iostream>
 #include "Matrix.h"
-#include <omp.h>
 #include <queue>
 #include "Node.h"
 #include "BranchAndBound.h"
 #include "Threads.h"
 #include <chrono>
+//#include <omp.h>
 
 struct Compare {
     bool operator()(Node &node1, Node &node2) {
@@ -69,21 +69,21 @@ int main() {
 
     return 0;
 
-    // Begin of parallel region
-    int nthreads, tid;
-
-    /* Fork a team of threads with each thread having a private tid variable */
-#pragma omp parallel private(nthreads, tid) default(none)
-    {
-        /* Obtain and print thread id */
-        tid = omp_get_thread_num();
-        printf("Hello World from thread = %d\n", tid);
-
-        /* Only master thread does this */
-        if (tid == 0) {
-            nthreads = omp_get_num_threads();
-            printf("Number of threads = %d\n", nthreads);
-        }
-    }  /* All threads join master thread and terminate */
+//    // Begin of parallel region
+//    int nthreads, tid;
+//
+//    /* Fork a team of threads with each thread having a private tid variable */
+//#pragma omp parallel private(nthreads, tid) default(none)
+//    {
+//        /* Obtain and print thread id */
+//        tid = omp_get_thread_num();
+//        printf("Hello World from thread = %d\n", tid);
+//
+//        /* Only master thread does this */
+//        if (tid == 0) {
+//            nthreads = omp_get_num_threads();
+//            printf("Number of threads = %d\n", nthreads);
+//        }
+//    }  /* All threads join master thread and terminate */
 
 }
