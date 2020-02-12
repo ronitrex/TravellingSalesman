@@ -3,7 +3,7 @@
 #include "Tour.h"
 #include "Matrix.h"
 
-int getNextNode(int prev, int current, std::vector<std::vector<int>> edgeMatrix) {
+int getNextEdge(int prev, int current, std::vector<std::vector<int>> edgeMatrix) {
     int matrixOrder = edgeMatrix.size();
     for (int i = 0; i < matrixOrder; i++) {
         if (edgeMatrix[current][i] == 1 && i != prev) {
@@ -26,20 +26,20 @@ double Tour::findLowerBound(Matrix problemMatrix) {
         for (int j = 0; j < matrixOrder; j++) {
             if (positiveEdges == 2) {
                 break;
-            } else if (nodeEdgeMatrix[i][j] == 1 && !isSet) {
+            } else if (tourEdgeMatrix[i][j] == 1 && !isSet) {
                 firstLowest = inputMatrix[i][j];
                 positiveEdges++;
                 isSet = true;
-            } else if (nodeEdgeMatrix[i][j] == 1 && isSet) {
+            } else if (tourEdgeMatrix[i][j] == 1 && isSet) {
                 secondLowest = inputMatrix[i][j];
                 positiveEdges++;
-            } else if (inputMatrix[i][j] <= firstLowest && inputMatrix[i][j] != 0 && nodeEdgeMatrix[i][j] != -1 &&
+            } else if (inputMatrix[i][j] <= firstLowest && inputMatrix[i][j] != 0 && tourEdgeMatrix[i][j] != -1 &&
                        !isSet) {
                 if (firstLowest < secondLowest) {
                     secondLowest = firstLowest;
                 }
                 firstLowest = inputMatrix[i][j];
-            } else if (inputMatrix[i][j] < secondLowest && inputMatrix[i][j] != 0 && nodeEdgeMatrix[i][j] != -1) {
+            } else if (inputMatrix[i][j] < secondLowest && inputMatrix[i][j] != 0 && tourEdgeMatrix[i][j] != -1) {
                 secondLowest = inputMatrix[i][j];
             }
         }
@@ -57,20 +57,20 @@ double Tour::findLowerBound(Matrix problemMatrix) {
     return totalNumber / 2.0;
 }
 
-double Tour::getNodeLowerBound() {
-    return nodeLowerBound;
+double Tour::getTourLowerBound() {
+    return tourLowerBound;
 }
 
-std::vector<std::vector<int>> Tour::getNodeEdgeMatrix() {
-    return nodeEdgeMatrix;
+std::vector<std::vector<int>> Tour::getTourEdgeMatrix() {
+    return tourEdgeMatrix;
 }
 
-bool Tour::checkIsLeafNode() {
-    int matrixOrder = nodeEdgeMatrix.size();
+bool Tour::checkIsTourComplete() {
+    int matrixOrder = tourEdgeMatrix.size();
     for (int i = 0; i < matrixOrder; i++) {
         for (int j = 0; j < matrixOrder; j++) {
             if (i != j) {
-                if (nodeEdgeMatrix[i][j] == 0) {
+                if (tourEdgeMatrix[i][j] == 0) {
                     return false;
                 }
             }
@@ -79,21 +79,21 @@ bool Tour::checkIsLeafNode() {
     return true;
 }
 
-bool Tour::getIsLeafNode() {
-    return isLeafNode;
+bool Tour::getIsTourComplete() {
+    return isTourComplete;
 }
 
 bool Tour::checkIsRoute() {
-    int matrixOrder = nodeEdgeMatrix.size();
+    int matrixOrder = tourEdgeMatrix.size();
     std::vector<int> usedEdges(matrixOrder, 0);
     std::vector<bool> vertVisitList(matrixOrder, false);
     int next = 0;
-    int prev = -1; // Keep track of previous node
+    int prev = -1; // Keep track of previous edge
 
 
     for (int i = 0; i < matrixOrder; i++) {
         for (int j = 0; j < matrixOrder; j++) {
-            if (nodeEdgeMatrix[i][j] == 1) {
+            if (tourEdgeMatrix[i][j] == 1) {
                 usedEdges[i] = usedEdges[i] + 1;
             }
         }
@@ -108,7 +108,7 @@ bool Tour::checkIsRoute() {
     int i = 0;
     while (isNotCircle || (i <= matrixOrder)) {
         i++;
-        next = getNextNode(prev, 0, nodeEdgeMatrix);
+        next = getNextEdge(prev, 0, tourEdgeMatrix);
         prev = next;
         // There is a circle!
         if (vertVisitList[next] == true) {
@@ -125,11 +125,11 @@ bool Tour::getIsRoute() {
 }
 
 int Tour::checkRouteCost(Matrix problemMatrix) {
-    int matrixOrder = nodeEdgeMatrix.size();
+    int matrixOrder = tourEdgeMatrix.size();
     int cost = 0;
     for (int i = 0; i < matrixOrder; i++) {
         for (int j = i + 1; j < matrixOrder; j++) {
-            if (nodeEdgeMatrix[i][j] == 1) {
+            if (tourEdgeMatrix[i][j] == 1) {
                 cost += problemMatrix.getMatrix()[i][j];
             }
         }
@@ -143,10 +143,10 @@ int Tour::getRouteCost() {
 
 void Tour::printRoute() {
     std::cout << "\nThe optimal tour will include the following edges : \n";
-    int matrixOrder = nodeEdgeMatrix.size();
+    int matrixOrder = tourEdgeMatrix.size();
     for (int i = 0; i < matrixOrder; i++) {
         for (int j = i + 1; j < matrixOrder; j++) {
-            if (nodeEdgeMatrix[i][j] == 1) {
+            if (tourEdgeMatrix[i][j] == 1) {
                 char c1 = 65 + i;
                 char c2 = 65 + j;
                 std::cout << "\t" << c1 << " " << c2 << std::endl;

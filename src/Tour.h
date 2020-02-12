@@ -2,20 +2,20 @@
 #include "Matrix.h"
 #include <limits>
 
-#ifndef TRAVELLINGSALESMAN_NODE_H
-#define TRAVELLINGSALESMAN_NODE_H
+#ifndef TRAVELLINGSALESMAN_TOUR_H
+#define TRAVELLINGSALESMAN_TOUR_H
 
 class Tour {
 private:
-    double nodeLowerBound;
-    std::vector<std::vector<int>> nodeEdgeMatrix;
-    bool isLeafNode;
+    double tourLowerBound;
+    std::vector<std::vector<int>> tourEdgeMatrix;
+    bool isTourComplete;
     bool isRoute;
     int routeCost = std::numeric_limits<int>::max();
 
     double findLowerBound(Matrix problemMatrix);
 
-    bool checkIsLeafNode();
+    bool checkIsTourComplete();
 
     bool checkIsRoute();
 
@@ -23,20 +23,20 @@ private:
 
 public:
     Tour(Matrix problemMatrix, std::vector<std::vector<int>> edgeMatrix) {
-        nodeEdgeMatrix = edgeMatrix;
-        nodeLowerBound = findLowerBound(problemMatrix);
-        isLeafNode = checkIsLeafNode();
+        tourEdgeMatrix = edgeMatrix;
+        tourLowerBound = findLowerBound(problemMatrix);
+        isTourComplete = checkIsTourComplete();
         isRoute = checkIsRoute();
         if (isRoute) {
             routeCost = checkRouteCost(problemMatrix);
         }
     }
 
-    double getNodeLowerBound();
+    double getTourLowerBound();
 
-    std::vector<std::vector<int>> getNodeEdgeMatrix();
+    std::vector<std::vector<int>> getTourEdgeMatrix();
 
-    bool getIsLeafNode();
+    bool getIsTourComplete();
 
     bool getIsRoute();
 
@@ -46,4 +46,4 @@ public:
 
 };
 
-#endif //TRAVELLINGSALESMAN_NODE_H
+#endif //TRAVELLINGSALESMAN_TOUR_H

@@ -9,8 +9,8 @@ private:
     std::vector<std::vector<int>> leftChild;         // PLUSedgeMatrix()
     std::vector<std::vector<int>> rightChild;        // MINUSedgeMatrix()
 public:
-    Threads(Tour node) {
-        BranchAndBound BandB(node.getNodeEdgeMatrix());
+    Threads(Tour tour) {
+        BranchAndBound BandB(tour.getTourEdgeMatrix());
         leftChild = BandB.getPLUSedgeMatrix();
         rightChild = BandB.getMINUSedgeMatrix();
     }

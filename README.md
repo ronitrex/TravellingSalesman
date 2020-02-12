@@ -62,4 +62,4 @@ i.e. **edge(a, d)** *is same as* **edge(d, a)**.
 
 * [**Game Theory Lab, Department of Computer Science and Automation, Indian Institute of Science Bangalore**](http://lcm.csa.iisc.ernet.in/dsa/node187.html)
 
-* [**Worlfram Mathworld**](http://mathworld.wolfram.com/TravelingSalesmanProblem.html)
+* [**Wolfram MathWorld**](http://mathworld.wolfram.com/TravelingSalesmanProblem.html)

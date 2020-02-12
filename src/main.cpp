@@ -8,8 +8,8 @@
 #include <chrono>
 
 struct Compare {
-    bool operator()(Tour &node1, Tour &node2) {
-        return node1.getNodeLowerBound() > node2.getNodeLowerBound();
+    bool operator()(Tour &tour1, Tour &tour2) {
+        return tour1.getTourLowerBound() > tour2.getTourLowerBound();
     }
 };
 
@@ -22,36 +22,36 @@ void singleThreadBAndBTSP(int matrixOrder) {
 
     std::vector<std::vector<int>> edgeMatrix(matrixOrder, std::vector<int>(matrixOrder, 0));
     std::priority_queue<Tour, std::vector<Tour>, Compare> TSP;
-    Tour bestNode(problemMatrix, edgeMatrix);
-    TSP.push(bestNode);
+    Tour bestTour(problemMatrix, edgeMatrix);
+    TSP.push(bestTour);
 
     int i = 0;
     start = std::chrono::system_clock::now();
     while (!TSP.empty()) {
-        Tour node = TSP.top();
+        Tour tour = TSP.top();
         TSP.pop();
-        if (node.getIsRoute()) {
-            if (node.getRouteCost() <= bestNode.getRouteCost()) {
-                bestNode = node;
+        if (tour.getIsRoute()) {
+            if (tour.getRouteCost() <= bestTour.getRouteCost()) {
+                bestTour = tour;
             }
         }
 
-        if (!node.getIsLeafNode()) {
-            Threads thread = Threads(node);
-            Tour leftNode(problemMatrix, thread.getLeftChild());
-            Tour rightNode(problemMatrix, thread.getRightChild());
-            if (leftNode.getNodeLowerBound() <= bestNode.getRouteCost()) {
-                TSP.push(leftNode);
+        if (!tour.getIsTourComplete()) {
+            Threads thread = Threads(tour);
+            Tour leftChildTour(problemMatrix, thread.getLeftChild());
+            Tour rightChildTour(problemMatrix, thread.getRightChild());
+            if (leftChildTour.getTourLowerBound() <= bestTour.getRouteCost()) {
+                TSP.push(leftChildTour);
             }
-            if (rightNode.getNodeLowerBound() <= bestNode.getRouteCost()) {
-                TSP.push(rightNode);
+            if (rightChildTour.getTourLowerBound() <= bestTour.getRouteCost()) {
+                TSP.push(rightChildTour);
             }
             i++;
         }
     }
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = end - start;
-    bestNode.printRoute();
+    bestTour.printRoute();
     std::cout << "Total Tours considered :\t" << i << std::endl;
     std::cout << "Time Taken (in seconds) :\t" << elapsed_seconds.count() << std::endl;
 

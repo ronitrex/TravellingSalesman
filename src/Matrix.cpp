@@ -32,14 +32,14 @@ void Matrix::populateMatrix() {
 
 void Matrix::displayMatrix() {
     std::cout << "\t\t";
-    for (int i = 0; i < order; i++) {	 	// Printing first row of citynames
+    for (int i = 0; i < order; i++) {        // Printing first row of citynames
         char c = 65 + i;
-        std::cout <<  c <<"\t\t";
+        std::cout << c << "\t\t";
     }
     std::cout << std::endl;
     for (int i = 0; i < order; i++) {
         char c = 65 + i;
-        std::cout <<  c <<"\t\t";
+        std::cout << c << "\t\t";
         for (int j = 0; j < order; j++) {
             std::cout << this->distanceMatrix[i][j] << "\t\t";
         }

@@ -36,7 +36,7 @@ std::vector<std::vector<int>> BranchAndBound::updateEdgeMatrix(std::vector<std::
     return edgeMatrix;
 }
 
-void BranchAndBound::getChildNodes(std::vector<std::vector<int>> edgeMatrix) {
+void BranchAndBound::getChildTours(std::vector<std::vector<int>> edgeMatrix) {
     int matrixOrder = edgeMatrix.size();
     bool edgeMatrixGenerated = false;
     for (int i = 0; i < matrixOrder; i++) {
