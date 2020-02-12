@@ -2,13 +2,13 @@
 #include "Matrix.h"
 #include <omp.h>
 #include <queue>
-#include "Node.h"
+#include "Tour.h"
 #include "BranchAndBound.h"
 #include "Threads.h"
 #include <chrono>
 
 struct Compare {
-    bool operator()(Node &node1, Node &node2) {
+    bool operator()(Tour &node1, Tour &node2) {
         return node1.getNodeLowerBound() > node2.getNodeLowerBound();
     }
 };
@@ -21,14 +21,14 @@ void singleThreadBAndBTSP(int matrixOrder) {
     problemMatrix.displayMatrix();
 
     std::vector<std::vector<int>> edgeMatrix(matrixOrder, std::vector<int>(matrixOrder, 0));
-    std::priority_queue<Node, std::vector<Node>, Compare> TSP;
-    Node bestNode(problemMatrix, edgeMatrix);
+    std::priority_queue<Tour, std::vector<Tour>, Compare> TSP;
+    Tour bestNode(problemMatrix, edgeMatrix);
     TSP.push(bestNode);
 
     int i = 0;
     start = std::chrono::system_clock::now();
     while (!TSP.empty()) {
-        Node node = TSP.top();
+        Tour node = TSP.top();
         TSP.pop();
         if (node.getIsRoute()) {
             if (node.getRouteCost() <= bestNode.getRouteCost()) {
@@ -38,8 +38,8 @@ void singleThreadBAndBTSP(int matrixOrder) {
 
         if (!node.getIsLeafNode()) {
             Threads thread = Threads(node);
-            Node leftNode(problemMatrix, thread.getLeftChild());
-            Node rightNode(problemMatrix, thread.getRightChild());
+            Tour leftNode(problemMatrix, thread.getLeftChild());
+            Tour rightNode(problemMatrix, thread.getRightChild());
             if (leftNode.getNodeLowerBound() <= bestNode.getRouteCost()) {
                 TSP.push(leftNode);
             }
@@ -52,8 +52,8 @@ void singleThreadBAndBTSP(int matrixOrder) {
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = end - start;
     bestNode.printRoute();
-    std::cout << "Total nodes popped : \t\t" << i << std::endl;
-    std::cout << "Time Taken (in seconds) : \t" << elapsed_seconds.count() << std::endl;
+    std::cout << "Total Tours considered :\t" << i << std::endl;
+    std::cout << "Time Taken (in seconds) :\t" << elapsed_seconds.count() << std::endl;
 
     std::cout << std::endl;
 }

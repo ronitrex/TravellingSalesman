@@ -52,11 +52,11 @@ i.e. **edge(a, d)** *is same as* **edge(d, a)**.
 
 ## Sequential Solution
 
-**Randomly generated problem matrix having 25 nodes:**
+**Randomly generated problem matrix having 26 nodes:**
 
-![](./readme/input25.png)
+![](./readme/input26.png)
 
-![](./readme/result25.png)
+![](./readme/result26.png)
 
 ## References
 

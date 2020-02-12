@@ -5,7 +5,7 @@
 #ifndef TRAVELLINGSALESMAN_NODE_H
 #define TRAVELLINGSALESMAN_NODE_H
 
-class Node {
+class Tour {
 private:
     double nodeLowerBound;
     std::vector<std::vector<int>> nodeEdgeMatrix;
@@ -22,7 +22,7 @@ private:
     int checkRouteCost(Matrix problemMatrix);
 
 public:
-    Node(Matrix problemMatrix, std::vector<std::vector<int>> edgeMatrix) {
+    Tour(Matrix problemMatrix, std::vector<std::vector<int>> edgeMatrix) {
         nodeEdgeMatrix = edgeMatrix;
         nodeLowerBound = findLowerBound(problemMatrix);
         isLeafNode = checkIsLeafNode();

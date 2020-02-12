@@ -1,4 +1,4 @@
-#include "Node.h"
+#include "Tour.h"
 #include "BranchAndBound.h"
 
 #ifndef TRAVELLINGSALESMAN_THREADS_H
@@ -9,7 +9,7 @@ private:
     std::vector<std::vector<int>> leftChild;         // PLUSedgeMatrix()
     std::vector<std::vector<int>> rightChild;        // MINUSedgeMatrix()
 public:
-    Threads(Node node) {
+    Threads(Tour node) {
         BranchAndBound BandB(node.getNodeEdgeMatrix());
         leftChild = BandB.getPLUSedgeMatrix();
         rightChild = BandB.getMINUSedgeMatrix();
