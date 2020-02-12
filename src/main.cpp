@@ -29,13 +29,12 @@ void singleThreadBAndBTSP(int matrixOrder) {
     start = std::chrono::system_clock::now();
     while (!TSP.empty()) {
         Node node = TSP.top();
+        TSP.pop();
         if (node.getIsRoute()) {
             if (node.getRouteCost() <= bestNode.getRouteCost()) {
                 bestNode = node;
             }
         }
-
-        TSP.pop();
 
         if (!node.getIsLeafNode()) {
             Threads thread = Threads(node);
