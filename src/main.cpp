@@ -17,7 +17,7 @@ void singleThreadBAndBTSP(int matrixOrder) {
     std::chrono::time_point<std::chrono::system_clock> start, end;
     Matrix problemMatrix(matrixOrder);
     std::cout << "User Input: ";
-    std::cout << problemMatrix.getOrder() << std::endl;
+    std::cout << problemMatrix.getOrder() << "\n" << std::endl;
     problemMatrix.displayMatrix();
 
     std::vector<std::vector<int>> edgeMatrix(matrixOrder, std::vector<int>(matrixOrder, 0));
@@ -60,7 +60,7 @@ void singleThreadBAndBTSP(int matrixOrder) {
 
 int main() {
     int matrixOrder;
-    std::cout << "Please enter the order of distanceMatrix. Enter 5 to generate the problem matrix in the readme."
+    std::cout << "Please enter the order of problem matrix. Enter 5 to generate the problem matrix in the readme."
               << std::endl;
     std::cin >> matrixOrder;
 

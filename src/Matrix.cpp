@@ -31,7 +31,15 @@ void Matrix::populateMatrix() {
 }
 
 void Matrix::displayMatrix() {
+    std::cout << "\t\t";
+    for (int i = 0; i < order; i++) {	 	// Printing first row of citynames
+        char c = 65 + i;
+        std::cout <<  c <<"\t\t";
+    }
+    std::cout << std::endl;
     for (int i = 0; i < order; i++) {
+        char c = 65 + i;
+        std::cout <<  c <<"\t\t";
         for (int j = 0; j < order; j++) {
             std::cout << this->distanceMatrix[i][j] << "\t\t";
         }
@@ -49,7 +57,7 @@ void Matrix::defaultMatrix() {
                                {4, 4, 0, 5, 8},
                                {2, 6, 5, 0, 6},
                                {7, 3, 8, 6, 0}};
-    std::cout << "Using the sample matrix shown in readme." << std::endl;
+    std::cout << "Using problem matrix explained in readme." << std::endl;
     for (int i = 0; i < order; i++) {
         for (int j = 0; j < order; j++) {
             this->distanceMatrix[i][j] = defaultMatrix[i][j];

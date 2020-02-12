@@ -147,7 +147,9 @@ void Node::printRoute() {
     for (int i = 0; i < matrixOrder; i++) {
         for (int j = i + 1; j < matrixOrder; j++) {
             if (nodeEdgeMatrix[i][j] == 1) {
-                std::cout << " " << i << " " << j << std::endl;
+                char c1 = 65 + i;
+                char c2 = 65 + j;
+                std::cout << "\t" << c1 << " " << c2 << std::endl;
             }
 
         }
