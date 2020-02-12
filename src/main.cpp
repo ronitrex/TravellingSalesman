@@ -60,7 +60,7 @@ void singleThreadBAndBTSP(int matrixOrder) {
 
 int main() {
     int matrixOrder;
-    std::cout << "Please enter the order of problem matrix. Enter 5 to generate the problem matrix in the readme."
+    std::cout << "Please enter the order of problem matrix. Enter 5 to generate the problem matrix explained in readme."
               << std::endl;
     std::cin >> matrixOrder;
 
