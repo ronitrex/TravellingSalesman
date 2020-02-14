@@ -10,6 +10,7 @@ int getNextEdge(int prev, int current, std::vector<std::vector<int>> edgeMatrix)
             return i;
         }
     }
+    return 0;
 }
 
 double Tour::findLowerBound(Matrix problemMatrix) {
@@ -122,6 +123,7 @@ bool Tour::checkIsRoute() {
 
 bool Tour::getIsRoute() {
     isRoute = checkIsRoute();
+    return isRoute;
 }
 
 int Tour::checkRouteCost(Matrix problemMatrix) {

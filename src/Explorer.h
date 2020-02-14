@@ -4,12 +4,12 @@
 #ifndef TRAVELLINGSALESMAN_THREADS_H
 #define TRAVELLINGSALESMAN_THREADS_H
 
-class Threads {
+class Explorer {
 private:
     std::vector<std::vector<int>> leftChild;         // PLUSedgeMatrix()
     std::vector<std::vector<int>> rightChild;        // MINUSedgeMatrix()
 public:
-    Threads(Tour tour) {
+    Explorer(Tour tour) {
         BranchAndBound BandB(tour.getTourEdgeMatrix());
         leftChild = BandB.getPLUSedgeMatrix();
         rightChild = BandB.getMINUSedgeMatrix();
