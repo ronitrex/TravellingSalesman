@@ -12,23 +12,24 @@ private:
     bool isTourComplete;
     bool isRoute;
     int routeCost = std::numeric_limits<int>::max();
+    Matrix* problemMatrix;
 
-    double findLowerBound(Matrix problemMatrix);
+    double findLowerBound();
 
     bool checkIsTourComplete();
 
     bool checkIsRoute();
 
-    int checkRouteCost(Matrix problemMatrix);
+    int checkRouteCost();
 
 public:
-    Tour(Matrix problemMatrix, std::vector<std::vector<int>> edgeMatrix) {
+    Tour(Matrix* problemMatrix, std::vector<std::vector<int>> edgeMatrix) : problemMatrix(problemMatrix){
         tourEdgeMatrix = edgeMatrix;
-        tourLowerBound = findLowerBound(problemMatrix);
+        tourLowerBound = findLowerBound();
         isTourComplete = checkIsTourComplete();
         isRoute = checkIsRoute();
         if (isRoute) {
-            routeCost = checkRouteCost(problemMatrix);
+            routeCost = checkRouteCost();
         }
     }
 

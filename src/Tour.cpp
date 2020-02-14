@@ -13,11 +13,11 @@ int getNextEdge(int prev, int current, std::vector<std::vector<int>> edgeMatrix)
     return 0;
 }
 
-double Tour::findLowerBound(Matrix problemMatrix) {
-    int **inputMatrix = problemMatrix.getMatrix();
+double Tour::findLowerBound() {
+    int **inputMatrix = problemMatrix->getMatrix();
     int firstLowest = std::numeric_limits<int>::max(); // Max value of int, to give an upper bound
     int secondLowest = std::numeric_limits<int>::max(); // Max value of int, to give an upper bound
-    int matrixOrder = problemMatrix.getOrder();
+    int matrixOrder = problemMatrix->getOrder();
     int totalNumber = 0;  // Set excluded edges to 0
     bool isSet = false; // Value to check whether the value has been set in "firstLowest" variable
 
@@ -126,13 +126,13 @@ bool Tour::getIsRoute() {
     return isRoute;
 }
 
-int Tour::checkRouteCost(Matrix problemMatrix) {
+int Tour::checkRouteCost(){
     int matrixOrder = tourEdgeMatrix.size();
     int cost = 0;
     for (int i = 0; i < matrixOrder; i++) {
         for (int j = i + 1; j < matrixOrder; j++) {
             if (tourEdgeMatrix[i][j] == 1) {
-                cost += problemMatrix.getMatrix()[i][j];
+                cost += problemMatrix->getMatrix()[i][j];
             }
         }
     }
