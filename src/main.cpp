@@ -29,6 +29,7 @@ void Tourism(std::priority_queue<Tour, std::vector<Tour>, Compare> *TSP, Tour *b
             v[threadNumber] = 0;
             int total = 0;
             for (int i = 0; i < sizeof(v); i++) {
+//                std::cout << total << std::endl;
                 total = total + v[i];
             }
             if (total == 0) {
@@ -54,13 +55,15 @@ void Tourism(std::priority_queue<Tour, std::vector<Tour>, Compare> *TSP, Tour *b
             Threads thread = Threads(tour);
             Tour leftChildTour(problemMatrix, thread.getLeftChild());
             Tour rightChildTour(problemMatrix, thread.getRightChild());
+            double leftChildTourLowerBound = leftChildTour.getTourLowerBound();
+            double rightChildTourTourLower = rightChildTour.getTourLowerBound();
 
             mutexTSP.lock();
 
-            if (leftChildTour.getTourLowerBound() <= bestTour->getRouteCost()) {
+            if (leftChildTourLowerBound <= bestTour->getRouteCost()) {
                 TSP->push(leftChildTour);
             }
-            if (rightChildTour.getTourLowerBound() <= bestTour->getRouteCost()) {
+            if (rightChildTourTourLower <= bestTour->getRouteCost()) {
                 TSP->push(rightChildTour);
             }
 
@@ -69,23 +72,41 @@ void Tourism(std::priority_queue<Tour, std::vector<Tour>, Compare> *TSP, Tour *b
     }
 }
 
-void dynamicThreadBAndBTSP(Matrix problemMatrix) {
+void multiThreadBAndBTSP(Matrix problemMatrix) {
     std::chrono::time_point<std::chrono::system_clock> start, end;
     int matrixOrder = problemMatrix.getOrder();
     std::vector<std::vector<int>> edgeMatrix(matrixOrder, std::vector<int>(matrixOrder, 0));
     std::priority_queue<Tour, std::vector<Tour>, Compare> toursPQ;
     Tour bestTour(problemMatrix, edgeMatrix);
     toursPQ.push(bestTour);
-    int numThreads = 12;
 
+    int numThreads = std::thread::hardware_concurrency();
+    int choice = 1;
+
+    std::cout << "Please select solution mode. \n1. Single-threaded sequential solution. \n2. Multi-threaded parallel solution." << std::endl;
+    std::cin >> choice;
+    if(choice==1){
+        numThreads = 1;
+        std::cout << "Running in single-threaded sequential mode" <<std::endl;
+    }else{
+        std::cout << "\n" << numThreads << " concurrent thread(s) supported by system. Using  " << numThreads
+                  << " thread(s) for maximum performance." << std::endl;
+    }
+
+    int numThreadsArray[48];
+    for (int i = 0; i < 48; i++) {
+        if (i < numThreads) {
+            numThreadsArray[i] = 1;
+        } else {
+            numThreadsArray[i] = 0;
+        }
+    }
     std::thread dynamicThreads[numThreads];
     bool keepWaiting = true;
-    int v[12] = {};
-    std::cout << "\nUsing 12 threads working in parallel." << std::endl;
 
     start = std::chrono::system_clock::now();
     for (int i = 0; i < numThreads; i++) {
-        dynamicThreads[i] = std::thread(Tourism, &toursPQ, &bestTour, problemMatrix, &keepWaiting, i, v);
+        dynamicThreads[i] = std::thread(Tourism, &toursPQ, &bestTour, problemMatrix, &keepWaiting, i, numThreadsArray);
     }
 
     for (int i = 0; i < numThreads; i++) {
@@ -99,45 +120,6 @@ void dynamicThreadBAndBTSP(Matrix problemMatrix) {
     std::cout << std::endl;
 }
 
-void singleThreadBAndBTSP(Matrix problemMatrix) {
-    std::chrono::time_point<std::chrono::system_clock> start, end;
-    int matrixOrder = problemMatrix.getOrder();
-    std::vector<std::vector<int>> edgeMatrix(matrixOrder, std::vector<int>(matrixOrder, 0));
-    std::priority_queue<Tour, std::vector<Tour>, Compare> TSP;
-    Tour bestTour(problemMatrix, edgeMatrix);
-    TSP.push(bestTour);
-
-    int i = 0;
-    start = std::chrono::system_clock::now();
-    while (!TSP.empty()) {
-        Tour tour = TSP.top();
-        TSP.pop();
-        if (tour.getIsRoute()) {
-            if (tour.getRouteCost() <= bestTour.getRouteCost()) {
-                bestTour = tour;
-            }
-        }
-
-        if (!tour.getIsTourComplete()) {
-            Threads thread = Threads(tour);
-            Tour leftChildTour(problemMatrix, thread.getLeftChild());
-            Tour rightChildTour(problemMatrix, thread.getRightChild());
-            if (leftChildTour.getTourLowerBound() <= bestTour.getRouteCost()) {
-                TSP.push(leftChildTour);
-            }
-            if (rightChildTour.getTourLowerBound() <= bestTour.getRouteCost()) {
-                TSP.push(rightChildTour);
-            }
-            i++;
-        }
-    }
-    end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end - start;
-    bestTour.printRoute();
-    std::cout << "Total Tours considered :\t" << i << std::endl;
-    std::cout << "Time Taken (in seconds) :\t" << elapsed_seconds.count() << std::endl;
-    std::cout << std::endl;
-}
 
 int main() {
     int matrixOrder;
@@ -149,25 +131,6 @@ int main() {
     Matrix problemMatrix(matrixOrder);
     std::cout << problemMatrix.getOrder() << "\n" << std::endl;
     problemMatrix.displayMatrix();
-//    singleThreadBAndBTSP(problemMatrix);
-    dynamicThreadBAndBTSP(problemMatrix);
+    multiThreadBAndBTSP(problemMatrix);
     return 0;
-
-    // Begin of parallel region
-    int nthreads, tid;
-
-    /* Fork a team of threads with each thread having a private tid variable */
-#pragma omp parallel private(nthreads, tid) default(none)
-    {
-        /* Obtain and print thread id */
-        tid = omp_get_thread_num();
-        printf("Hello World from thread = %d\n", tid);
-
-        /* Only master thread does this */
-        if (tid == 0) {
-            nthreads = omp_get_num_threads();
-            printf("Number of threads = %d\n", nthreads);
-        }
-    }  /* All threads join master thread and terminate */
-
 }
