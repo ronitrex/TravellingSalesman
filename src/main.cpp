@@ -70,12 +70,12 @@ void Tourism(std::priority_queue<Tour, std::vector<Tour>, Compare> *TSP, Tour *b
     }
 }
 
-void multiThreadBAndBTSP(Matrix problemMatrix) {
+void multiThreadBAndBTSP(Matrix* problemMatrix) {
     std::chrono::time_point<std::chrono::system_clock> start, end;
-    int matrixOrder = problemMatrix.getOrder();
+    int matrixOrder = problemMatrix->getOrder();
     std::vector<std::vector<int>> edgeMatrix(matrixOrder, std::vector<int>(matrixOrder, 0));
     std::priority_queue<Tour, std::vector<Tour>, Compare> toursPQ;
-    Tour bestTour(&problemMatrix, edgeMatrix);
+    Tour bestTour(problemMatrix, edgeMatrix);
     toursPQ.push(bestTour);
 
     unsigned int numThreads = std::thread::hardware_concurrency();
@@ -107,7 +107,7 @@ void multiThreadBAndBTSP(Matrix problemMatrix) {
 
     start = std::chrono::system_clock::now();
     for (int i = 0; i < numThreads; i++) {
-        dynamicThreads[i] = std::thread(Tourism, &toursPQ, &bestTour, &problemMatrix, &keepWaiting, i, numThreadsArray);
+        dynamicThreads[i] = std::thread(Tourism, &toursPQ, &bestTour, problemMatrix, &keepWaiting, i, numThreadsArray);
     }
 
     for (int i = 0; i < numThreads; i++) {
@@ -131,6 +131,6 @@ int main() {
     Matrix problemMatrix(matrixOrder);
     std::cout << problemMatrix.getOrder() << "\n" << std::endl;
     problemMatrix.displayMatrix();
-    multiThreadBAndBTSP(problemMatrix);
+    multiThreadBAndBTSP(&problemMatrix);
     return 0;
 }
