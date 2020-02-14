@@ -1,4 +1,4 @@
-# Travelling Salesman Problem
+# Travelling Salesman Problem [![GitHub](https://img.shields.io/github/license/ronitrex/TravellingSalesman)](./LICENSE)
 
 The **traveling salesman problem** is a problem in graph theory requiring the most efficient (i.e., least total distance) [Hamiltonian cycle](http://mathworld.wolfram.com/HamiltonianCycle.html) a salesman can take through each of **n cities**. No general method of solution is known, and the problem is [*NP-hard*](http://mathworld.wolfram.com/NP-HardProblem.html).
 
@@ -58,7 +58,13 @@ i.e. **edge(a, d)** *is same as* **edge(d, a)**.
 
 ![](./readme/result26.png)
 
+## Multi-threaded Solution
+![](./readme/input26MT.png)
+![](./readme/result26MT.png)
+
 ## References
+
+Some resources on understanding and solving the travelling salesman problem.
 
 * [**Game Theory Lab, Department of Computer Science and Automation, Indian Institute of Science Bangalore**](http://lcm.csa.iisc.ernet.in/dsa/node187.html)
 

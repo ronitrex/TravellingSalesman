@@ -1,5 +1,4 @@
 #include <vector>
-#include <iostream>
 #include "BranchAndBound.h"
 
 std::vector<std::vector<int>> BranchAndBound::updateEdgeMatrix(std::vector<std::vector<int>> edgeMatrix, int v) {
