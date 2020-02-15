@@ -53,18 +53,19 @@ void Tourism(std::priority_queue<Tour, std::vector<Tour>, Compare> *TSP, Tour *b
             Explorer explorer = Explorer(tour);
             Tour leftChildTour(problemMatrix, explorer.getLeftChild());
             Tour rightChildTour(problemMatrix, explorer.getRightChild());
+
             double leftChildTourLowerBound = leftChildTour.getTourLowerBound();
-            double rightChildTourTourLower = rightChildTour.getTourLowerBound();
-
             mutexTSP.lock();
-
             if (leftChildTourLowerBound <= bestTour->getRouteCost()) {
                 TSP->push(leftChildTour);
             }
-            if (rightChildTourTourLower <= bestTour->getRouteCost()) {
+            mutexTSP.unlock();
+
+            double rightChildTourLowerBound = rightChildTour.getTourLowerBound();
+            mutexTSP.lock();
+            if (rightChildTourLowerBound <= bestTour->getRouteCost()) {
                 TSP->push(rightChildTour);
             }
-
             mutexTSP.unlock();
         }
     }
@@ -88,14 +89,14 @@ void multiThreadBAndBTSP(Matrix* problemMatrix) {
         numThreads = 1;
         std::cout << "Running in single-threaded sequential mode." << std::endl;
     } else {
-        std::cout << "\n" << numThreads << " concurrent thread(s) supported by system. Using  " << numThreads
-                  << " thread(s) for maximum performance." << std::endl;
+        std::cout << "\n" << numThreads << " concurrent threads supported by system. Using " << numThreads
+                  << " threads for maximum performance." << std::endl;
     }
-    if (numThreads > 64) {
-        numThreads = 64;
+    if (numThreads > 16) {
+        numThreads = 16;
     }
-    int numThreadsArray[64];
-    for (int i = 0; i < 64; i++) {
+    int numThreadsArray[16];
+    for (int i = 0; i < 16; i++) {
         if (i < numThreads) {
             numThreadsArray[i] = 1;
         } else {

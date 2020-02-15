@@ -1,6 +1,6 @@
 # Travelling Salesman Problem [![GitHub](https://img.shields.io/github/license/ronitrex/TravellingSalesman)](./LICENSE)
 
-The **traveling salesman problem** is a problem in graph theory requiring the most efficient (i.e., least total distance) [Hamiltonian cycle](http://mathworld.wolfram.com/HamiltonianCycle.html) a salesman can take through each of **n cities**. No general method of solution is known, and the problem is [*NP-hard*](http://mathworld.wolfram.com/NP-HardProblem.html).
+The **traveling salesman problem** is a problem in graph theory requiring the most efficient (i.e., least total distance) [Hamiltonian cycle](http://mathworld.wolfram.com/HamiltonianCycle.html) a salesman can take through each of **n cities**. No general method of solution is known, and the problem is [*NP-hard.*](http://mathworld.wolfram.com/NP-HardProblem.html)
 
 Consider the following graph:
 
@@ -24,7 +24,7 @@ Mathematically,
 
 From the solution set S of possible tours, another function is defined which goes over the nodes in **ascending order** and marks them for *inclusion or exclusion* in a given tour.  
 
-For example, **city 0 (or A)** is considered **start**. **city 1 (or B)** is considered after **city 0 (or A)**. The function marks **edge(city 0, city 1)** or **edge(A, B)** for *exclusion / inclusion* and then calculates the lower bound of **tours with ab** and a **tours without ab**.
+For example, **city 0 (or A)** is considered **start**. **city 1 (or B)** is considered after **city 0 (or A)**. The function marks **edge(city 0, city 1)** or **edge(A, B)** for *exclusion / inclusion* and then calculates the lower bound of **tours with ab** and **tours without ab**.
 ![](./readme/problemTours.png)
 
 Every time a new branch is created in this procedure, the following information is updated. 
@@ -48,27 +48,32 @@ When a branch is created, after making what inferences can be made, the lower bo
 
 ## Problem Matrix and Solution Tree
 
-The problem assumes that all nodes are connected to each other via bidirectional edges. 
+The problem assumes that all nodes are connected to each other via undirected or bidirectional edges. The problem graph is a complete graph. This means that all nodes are connected to one another via undirected edges.  
+
 i.e. **edge(a, d)** *is same as* **edge(d, a)**.  
-**Tour N** gives the optimal (or lowest) **route cost (19)**. 
+
+The problem graph is used to create a solution tree. At every level, the data about which nodes are to be included or excluded is updated. 
  
 ![](./readme/problemSolution.png)
 
-Running problem being discussed in readme:
+Distance from **node A** to **node B** *is equal to* distance from **node B** to **node A**. The *problem graph* is used to create the *problem matrix*. The rows and columns are filled with distances from cities to one another, leading to the creation of a symmetric matrix. 
+
+The *problem matrix* for the *problem graph* can be seen below. *Notice that distance from a city to itself is 0*.
 
 ![](./readme/input5.png)
 
 An optimal tour is: **A -> C -> B -> E -> D -> A**
 
-# Sequential Solution and Multi-threaded Solution
-Consider the following input matrix with 29 nodes (or cities).
+# Sequential Solution vs Multi-threaded Solution
+
+Consider the following problem matrix representing 29 cities. For the sake of simplicity, *distances between cities to one another is always randomly set between 1 - 9*, and the *distance of a city from itself is always set to 0*.
 
 ![](./readme/input29.png)
 
-The matrix can be either solved sequentially or thread-based parallelism can be introduced in the solution. Parallelism can drastically improve performance at the cost of increased complexity of system.
+The problem matrix can be either solved sequentially or thread-based parallelism can be introduced. Parallelism can drastically improve performance at the cost of increased system complexity.
 
 ## Sequential Solution
-The main thread handles all the operations. There is no issue with race conditions as with just one thread, there is no problem with concurrent access. But performance is not optimal and the system resources are not being exploited fully.
+The main thread handles all the operations. Performance is not optimal and the system resources are not being exploited fully. It can clearly be seen that only one CPU core is being stressed at any time.
 
 ![](./readme/input29sequential.gif)
 
@@ -80,7 +85,7 @@ The main thread handles all the operations. There is no issue with race conditio
 ![](./readme/result26.png)
 
 ## Multi-threaded Solution
-Mutex is introduced to deal with threads trying to access the same data concurrently. This way the race conditions are avoided. All threads share the workload leading to massive improvements in performance.
+*Mutex* is introduced to deal with threads trying to access the same data concurrently. *Race conditions* are avoided this way. All threads share the workload leading to massive improvements in performance.
 
 ![](./readme/input29parallel.gif)
 
@@ -88,9 +93,9 @@ Mutex is introduced to deal with threads trying to access the same data concurre
 
 ![](./readme/input30parallelsolution.png)
 
-## Sequential Solution vs Multi-threaded Solution
+## Overview
 
-Below are some of the observed values. As can be clearly seen, there is not much difference between the two methods for small input sizes, but the difference grows exponentially as the number of cities increase.
+Below are some of the observed values on a system with 6 actual cores and 6 virtual cores. There is not much difference between the two methods for small number of cities, but the difference grows exponentially as the number of cities increase.
 
 |No. of cities 		| Optimal Tour Cost |     Time taken : Sequential Solution | Time taken : Parallel Solution|
 | ----------------|:-------------:| -----:|-------:|
