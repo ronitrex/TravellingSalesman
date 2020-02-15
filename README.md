@@ -50,21 +50,43 @@ i.e. **edge(a, d)** *is same as* **edge(d, a)**.
 ![](./readme/problemSolution.png)
 ![](./readme/input5.png)
 
-## Sequential Solution
+## Sequential Solution / Multi-threaded Solution
+Consider the following input matrix.
+![](./readme/input29.png)
 
-**Randomly generated problem matrix having 26 nodes:**
+### Sequential Solution
 
-![](./readme/input26.png)
+![](./readme/input29sequential.gif)
+
+![](./readme/input29SequentialSolution.png)
+
 
 ![](./readme/result26.png)
 
 ## Multi-threaded Solution
-![](./readme/input26MT.png)
-![](./readme/result26MT.png)
+![](./readme/input29parallel.gif)
+![](./readme/input30parallelsolution.png)
+
+### Sequential Solution vs Multi-threaded Solution
+
+Below are some of the observed values. As can be clearly seen, there is not much difference between the two methods for small input sizes, but the difference grows exponentially as the number of cities increase.
+
+|No. of cities 		| Optimal Tour Cost |     Time taken : Sequential Solution | Time taken : Parallel Solution|
+| ----------------|:-------------:| -----:|-------:|
+| 5	|	19		|	**0.00120875** seconds	| **0.00357606** seconds
+| 10		|22	|		**0.0180687** seconds	|  **0.0130591** seconds
+| 15   	| 31	|		**0.479548** seconds | **0.152671** seconds
+| 20 	| 33 	|  **16.9916** seconds | **4.43818** seconds
+| 22    	| 36 	|	**8.0414** seconds | **1.87537** seconds
+| 24		|	36	|	**51.9371** seconds | **13.0014** seconds
+| 26 	|	37	| **654.127** seconds or ***10.90*** *minutes*| **193.009** seconds or ***3.21*** *minutes*
+| 28	 	|	37  |	**527.881** seconds ***8.79*** *minutes*| **143.635** seconds or ***3.29*** *minutes*
+| 29		|	38  |    **2411.89** seconds or ***40.19*** *minutes*| **683.101** seconds ***11.38*** *minutes*
+ 
 
 ## References
 
-Some resources on understanding and solving the travelling salesman problem.
+Some resources on understanding and solving the Travelling Salesman Problem.
 
 * [**Game Theory Lab, Department of Computer Science and Automation, Indian Institute of Science Bangalore**](http://lcm.csa.iisc.ernet.in/dsa/node187.html)
 

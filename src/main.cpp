@@ -86,7 +86,7 @@ void multiThreadBAndBTSP(Matrix* problemMatrix) {
     std::cin >> choice;
     if (choice == 1) {
         numThreads = 1;
-        std::cout << "Running in single-threaded sequential mode" << std::endl;
+        std::cout << "Running in single-threaded sequential mode." << std::endl;
     } else {
         std::cout << "\n" << numThreads << " concurrent thread(s) supported by system. Using  " << numThreads
                   << " thread(s) for maximum performance." << std::endl;
@@ -117,7 +117,7 @@ void multiThreadBAndBTSP(Matrix* problemMatrix) {
 
     std::chrono::duration<double> elapsed_seconds = end - start;
     bestTour.printRoute();
-    std::cout << "Time Taken (in seconds) :\t" << elapsed_seconds.count() << std::endl;
+    std::cout << "Time taken (in seconds) :\t" << elapsed_seconds.count() << std::endl;
     std::cout << std::endl;
 }
 
@@ -127,9 +127,8 @@ int main() {
     std::cout << "Please enter the order of problem matrix. Enter 5 to generate the problem matrix explained in readme."
               << std::endl;
     std::cin >> matrixOrder;
-    std::cout << "User Input: ";
     Matrix problemMatrix(matrixOrder);
-    std::cout << problemMatrix.getOrder() << "\n" << std::endl;
+    std::cout << "User Input: " << problemMatrix.getOrder() << "\n" << std::endl;
     problemMatrix.displayMatrix();
     multiThreadBAndBTSP(&problemMatrix);
     return 0;
