@@ -71,7 +71,7 @@ void Tourism(std::priority_queue<Tour, std::vector<Tour>, Compare> *TSP, Tour *b
     }
 }
 
-void multiThreadBAndBTSP(Matrix* problemMatrix) {
+void multiThreadBAndBTSP(Matrix *problemMatrix) {
     std::chrono::time_point<std::chrono::system_clock> start, end;
     int matrixOrder = problemMatrix->getOrder();
     std::vector<std::vector<int>> edgeMatrix(matrixOrder, std::vector<int>(matrixOrder, 0));

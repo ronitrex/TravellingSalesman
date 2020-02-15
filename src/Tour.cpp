@@ -3,7 +3,7 @@
 #include "Tour.h"
 #include "Matrix.h"
 
-int getNextEdge(int prev, int current, std::vector<std::vector<int>> edgeMatrix) {
+int getNextNode(int prev, int current, std::vector<std::vector<int>> edgeMatrix) {
     int matrixOrder = edgeMatrix.size();
     for (int i = 0; i < matrixOrder; i++) {
         if (edgeMatrix[current][i] == 1 && i != prev) {
@@ -91,7 +91,6 @@ bool Tour::checkIsRoute() {
     int next = 0;
     int prev = -1; // Keep track of previous edge
 
-
     for (int i = 0; i < matrixOrder; i++) {
         for (int j = 0; j < matrixOrder; j++) {
             if (tourEdgeMatrix[i][j] == 1) {
@@ -109,7 +108,7 @@ bool Tour::checkIsRoute() {
     int i = 0;
     while (isNotCircle || (i <= matrixOrder)) {
         i++;
-        next = getNextEdge(prev, 0, tourEdgeMatrix);
+        next = getNextNode(prev, 0, tourEdgeMatrix);
         prev = next;
         // There is a circle!
         if (vertVisitList[next] == true) {
@@ -126,7 +125,7 @@ bool Tour::getIsRoute() {
     return isRoute;
 }
 
-int Tour::checkRouteCost(){
+int Tour::checkRouteCost() {
     int matrixOrder = tourEdgeMatrix.size();
     int cost = 0;
     for (int i = 0; i < matrixOrder; i++) {
